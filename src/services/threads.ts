@@ -9,10 +9,10 @@
  *   3. POST /user/threads_publish  → publishes the container
  */
 
-import { env, API_URLS } from "../config/env.js";
-import { logger } from "../utils/logger.js";
-import { validateThreadsAPIResponse } from "../utils/validation.js";
-import { sleep } from "../utils/retry.js";
+import { env, API_URLS } from "../config/env";
+import { logger } from "../utils/logger";
+import { validateThreadsAPIResponse } from "../utils/validation";
+import { sleep } from "../utils/retry";
 
 interface ThreadsPostParams {
   text: string;

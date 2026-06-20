@@ -14,18 +14,18 @@ import {
   SocialAsset,
   Platform,
   PublishResult,
-} from "../types/socialAsset.js";
+} from "../types/socialAsset";
 import {
   isAlreadyPublished,
   markPlatformPublished,
   writePostLog,
   handlePublishFailure,
-} from "../services/supabase.js";
-import { trackPublishSuccess, trackPublishFailure } from "../services/analytics.js";
-import { validateAsset } from "../utils/validation.js";
-import { validateImage } from "../utils/imageValidation.js";
-import { logger } from "../utils/logger.js";
-import { env } from "../config/env.js";
+} from "../services/supabase";
+import { trackPublishSuccess, trackPublishFailure } from "../services/analytics";
+import { validateAsset } from "../utils/validation";
+import { validateImage } from "../utils/imageValidation";
+import { logger } from "../utils/logger";
+import { env } from "../config/env";
 
 export abstract class BasePublisher {
   abstract readonly platform: Platform;

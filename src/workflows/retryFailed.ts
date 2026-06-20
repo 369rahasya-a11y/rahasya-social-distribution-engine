@@ -8,12 +8,12 @@
  *   Attempt 4: 6 hours
  */
 
-import { fetchRetryQueue, updateQueueItem, fetchAssetById } from "../services/supabase.js";
-import { FacebookPublisher } from "../publishers/FacebookPublisher.js";
-import { InstagramPublisher } from "../publishers/InstagramPublisher.js";
-import { ThreadsPublisher } from "../publishers/ThreadsPublisher.js";
-import { Platform } from "../types/socialAsset.js";
-import { logger } from "../utils/logger.js";
+import { fetchRetryQueue, updateQueueItem, fetchAssetById } from "../services/supabase";
+import { FacebookPublisher } from "../publishers/FacebookPublisher";
+import { InstagramPublisher } from "../publishers/InstagramPublisher";
+import { ThreadsPublisher } from "../publishers/ThreadsPublisher";
+import { Platform } from "../types/socialAsset";
+import { logger } from "../utils/logger";
 
 const publishers = {
   facebook: new FacebookPublisher(),

@@ -9,10 +9,10 @@
  *   3. POST /ig_user/media_publish  → publishes the container
  */
 
-import { env, API_URLS } from "../config/env.js";
-import { logger } from "../utils/logger.js";
-import { validateGraphAPIResponse } from "../utils/validation.js";
-import { sleep } from "../utils/retry.js";
+import { env, API_URLS } from "../config/env";
+import { logger } from "../utils/logger";
+import { validateGraphAPIResponse } from "../utils/validation";
+import { sleep } from "../utils/retry";
 
 interface InstagramPostParams {
   caption: string;

@@ -3,8 +3,8 @@
  * Validates URL reachability, content type, and size constraints.
  */
 
-import { ImageValidationResult } from "../types/socialAsset.js";
-import { logger } from "./logger.js";
+import { ImageValidationResult } from "../types/socialAsset";
+import { logger } from "./logger";
 
 // Platform image requirements
 const IMAGE_CONSTRAINTS = {

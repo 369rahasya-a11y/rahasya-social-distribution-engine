@@ -6,9 +6,9 @@ import {
   fetchRetryQueue,
   updateQueueItem,
   fetchAssetById,
-} from "./supabase.js";
-import { SocialQueueItem } from "../types/socialAsset.js";
-import { logger } from "../utils/logger.js";
+} from "./supabase";
+import { SocialQueueItem } from "../types/socialAsset";
+import { logger } from "../utils/logger";
 
 export { fetchRetryQueue, updateQueueItem };
 

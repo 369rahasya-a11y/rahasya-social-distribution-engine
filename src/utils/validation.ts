@@ -2,8 +2,8 @@
  * Input and response validation utilities.
  */
 
-import { SocialAsset } from "../types/socialAsset.js";
-import { logger } from "./logger.js";
+import { SocialAsset } from "../types/socialAsset";
+import { logger } from "./logger";
 
 /**
  * Validate that a social asset has all required fields for publishing.

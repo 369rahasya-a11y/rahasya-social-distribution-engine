@@ -3,10 +3,10 @@
  * Extends BasePublisher for consistent idempotency, logging, and retry behavior.
  */
 
-import { BasePublisher } from "./BasePublisher.js";
-import { SocialAsset, Platform } from "../types/socialAsset.js";
-import { publishToFacebook } from "../services/facebook.js";
-import { generateCaption } from "../utils/captionGenerator.js";
+import { BasePublisher } from "./BasePublisher";
+import { SocialAsset, Platform } from "../types/socialAsset";
+import { publishToFacebook } from "../services/facebook";
+import { generateCaption } from "../utils/captionGenerator";
 
 export class FacebookPublisher extends BasePublisher {
   readonly platform: Platform = "facebook";

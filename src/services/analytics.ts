@@ -3,9 +3,9 @@
  * Designed so analytics can be extended without touching publishers.
  */
 
-import { Platform, PublishResult } from "../types/socialAsset.js";
-import { writePostLog } from "./supabase.js";
-import { logger } from "../utils/logger.js";
+import { Platform, PublishResult } from "../types/socialAsset";
+import { writePostLog } from "./supabase";
+import { logger } from "../utils/logger";
 
 /**
  * Record a successful publish event.

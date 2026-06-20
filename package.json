@@ -6,30 +6,32 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "publish:social": "ts-node src/workflows/publishSocial.ts",
-    "publish:asset": "ts-node src/commands/publishAsset.ts",
-    "retry:failed": "ts-node src/workflows/retryFailed.ts",
-    "daily:report": "ts-node src/workflows/dailyReport.ts",
-    "dry-run": "ts-node src/commands/dryRun.ts",
-    "backfill": "ts-node src/commands/backfill.ts",
-    "health-check": "ts-node src/commands/healthCheck.ts"
+    "dev": "ts-node --project tsconfig.json src/index.ts",
+    "publish:social": "ts-node --project tsconfig.json src/workflows/publishSocial.ts",
+    "publish:asset": "ts-node --project tsconfig.json src/commands/publishAsset.ts",
+    "retry:failed": "ts-node --project tsconfig.json src/workflows/retryFailed.ts",
+    "daily:report": "ts-node --project tsconfig.json src/workflows/dailyReport.ts",
+    "dry-run": "ts-node --project tsconfig.json src/commands/dryRun.ts",
+    "backfill": "ts-node --project tsconfig.json src/commands/backfill.ts",
+    "health-check": "ts-node --project tsconfig.json src/commands/healthCheck.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
     "axios": "^1.7.7",
-    "dotenv": "^17.4.2",
     "form-data": "^4.0.1",
-    "node-fetch": "^3.3.2",
-    "ws": "^8.21.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",
-    "@types/ws": "^8.18.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "ts-node": {
+    "esm": false,
+    "transpileOnly": false,
+    "files": true
   }
 }

@@ -3,10 +3,10 @@
  * Extends BasePublisher for consistent idempotency, logging, and retry behavior.
  */
 
-import { BasePublisher } from "./BasePublisher.js";
-import { SocialAsset, Platform } from "../types/socialAsset.js";
-import { publishToThreads } from "../services/threads.js";
-import { generateCaption } from "../utils/captionGenerator.js";
+import { BasePublisher } from "./BasePublisher";
+import { SocialAsset, Platform } from "../types/socialAsset";
+import { publishToThreads } from "../services/threads";
+import { generateCaption } from "../utils/captionGenerator";
 
 export class ThreadsPublisher extends BasePublisher {
   readonly platform: Platform = "threads";

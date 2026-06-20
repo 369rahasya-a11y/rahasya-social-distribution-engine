@@ -4,9 +4,9 @@
  * API Version: v21.0
  */
 
-import { env, API_URLS } from "../config/env.js";
-import { logger } from "../utils/logger.js";
-import { validateGraphAPIResponse } from "../utils/validation.js";
+import { env, API_URLS } from "../config/env";
+import { logger } from "../utils/logger";
+import { validateGraphAPIResponse } from "../utils/validation";
 
 interface FacebookPostParams {
   message: string;

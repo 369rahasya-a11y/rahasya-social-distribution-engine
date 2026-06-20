@@ -3,7 +3,7 @@
  * Generates platform-optimized hashtag sets per zodiac sign.
  */
 
-import { Platform, ZodiacSign } from "../types/socialAsset.js";
+import { Platform, ZodiacSign } from "../types/socialAsset";
 
 // ── Core brand hashtags ───────────────────────────────────────────────────
 

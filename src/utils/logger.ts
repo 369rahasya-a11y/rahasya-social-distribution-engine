@@ -3,7 +3,7 @@
  * Outputs JSON-friendly logs suitable for GitHub Actions and log aggregators.
  */
 
-import { env } from "../config/env.js";
+import { env } from "../config/env";
 
 type LogLevel = "debug" | "info" | "warn" | "error";
 

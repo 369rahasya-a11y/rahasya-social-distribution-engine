@@ -4,7 +4,7 @@
  */
 
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { env, RETRY_CONFIG } from "../config/env.js";
+import { env, RETRY_CONFIG } from "../config/env";
 import {
   SocialAsset,
   SocialPostLog,
@@ -13,8 +13,8 @@ import {
   SocialQueueItemInsert,
   Platform,
   PostStatus,
-} from "../types/socialAsset.js";
-import { logger } from "../utils/logger.js";
+} from "../types/socialAsset";
+import { logger } from "../utils/logger";
 
 // ── Singleton Supabase client ─────────────────────────────────────────────
 
@@ -375,7 +375,7 @@ export async function handlePublishFailure(
   error: string,
   retryCount: number
 ): Promise<void> {
-  const { RETRY_CONFIG: rc } = await import("../config/env.js");
+  const { RETRY_CONFIG: rc } = await import("../config/env");
 
   // Write to post log
   const status: PostStatus = "failed";

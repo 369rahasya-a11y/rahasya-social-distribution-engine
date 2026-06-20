@@ -3,9 +3,9 @@
  * Outputs to logs for GitHub Actions visibility and debugging.
  */
 
-import { fetchRecentPostLogs } from "../services/supabase.js";
-import { SocialPostLog, Platform } from "../types/socialAsset.js";
-import { logger } from "../utils/logger.js";
+import { fetchRecentPostLogs } from "../services/supabase";
+import { SocialPostLog, Platform } from "../types/socialAsset";
+import { logger } from "../utils/logger";
 
 const PLATFORMS: Platform[] = ["facebook", "instagram", "threads"];
 

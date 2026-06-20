@@ -3,8 +3,8 @@
  * Run with: npm run health-check
  */
 
-import { runHealthCheck } from "../services/health.js";
-import { logger } from "../utils/logger.js";
+import { runHealthCheck } from "../services/health";
+import { logger } from "../utils/logger";
 
 async function run(): Promise<void> {
   logger.info("🏥 Rahasya Social Distribution Engine — Health Check\n");

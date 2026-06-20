@@ -3,9 +3,9 @@
  * Produces platform-optimized captions with duplicate protection via variations.
  */
 
-import { Platform, PlatformCaption, ZodiacSign } from "../types/socialAsset.js";
-import { generateHashtags, formatHashtags } from "./hashtags.js";
-import { getRahasyaUTMUrl } from "./utm.js";
+import { Platform, PlatformCaption, ZodiacSign } from "../types/socialAsset";
+import { generateHashtags, formatHashtags } from "./hashtags";
+import { getRahasyaUTMUrl } from "./utm";
 
 // ── Zodiac emoji map ──────────────────────────────────────────────────────
 

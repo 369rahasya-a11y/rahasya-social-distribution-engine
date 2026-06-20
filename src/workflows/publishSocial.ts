@@ -7,14 +7,14 @@
  * Called by GitHub Actions on schedule and via workflow_dispatch.
  */
 
-import { fetchUnpublishedAssets, lockAsset, unlockAsset } from "../services/supabase.js";
-import { FacebookPublisher } from "../publishers/FacebookPublisher.js";
-import { InstagramPublisher } from "../publishers/InstagramPublisher.js";
-import { ThreadsPublisher } from "../publishers/ThreadsPublisher.js";
-import { PublishResult, SocialAsset, Platform } from "../types/socialAsset.js";
-import { logger } from "../utils/logger.js";
-import { sleep } from "../utils/retry.js";
-import { RATE_LIMITS } from "../config/env.js";
+import { fetchUnpublishedAssets, lockAsset, unlockAsset } from "../services/supabase";
+import { FacebookPublisher } from "../publishers/FacebookPublisher";
+import { InstagramPublisher } from "../publishers/InstagramPublisher";
+import { ThreadsPublisher } from "../publishers/ThreadsPublisher";
+import { PublishResult, SocialAsset, Platform } from "../types/socialAsset";
+import { logger } from "../utils/logger";
+import { sleep } from "../utils/retry";
+import { RATE_LIMITS } from "../config/env";
 
 // ── Publisher registry ────────────────────────────────────────────────────
 

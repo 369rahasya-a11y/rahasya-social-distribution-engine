@@ -2,11 +2,11 @@
  * Health check service — validates all external dependencies.
  */
 
-import { testSupabaseConnection } from "./supabase.js";
-import { validateFacebookCredentials } from "./facebook.js";
-import { validateInstagramCredentials } from "./instagram.js";
-import { validateThreadsCredentials } from "./threads.js";
-import { logger } from "../utils/logger.js";
+import { testSupabaseConnection } from "./supabase";
+import { validateFacebookCredentials } from "./facebook";
+import { validateInstagramCredentials } from "./instagram";
+import { validateThreadsCredentials } from "./threads";
+import { logger } from "../utils/logger";
 
 export interface HealthStatus {
   healthy: boolean;

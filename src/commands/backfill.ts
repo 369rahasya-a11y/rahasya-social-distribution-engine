@@ -6,9 +6,9 @@
  * Safe to interrupt and rerun (idempotent).
  */
 
-import { fetchUnpublishedAssets } from "../services/supabase.js";
-import { runPublishWorkflow } from "../workflows/publishSocial.js";
-import { logger } from "../utils/logger.js";
+import { fetchUnpublishedAssets } from "../services/supabase";
+import { runPublishWorkflow } from "../workflows/publishSocial";
+import { logger } from "../utils/logger";
 
 const BACKFILL_BATCH_SIZE = 5; // Process 5 assets at a time
 const BATCH_DELAY_MS = 10000; // 10 second delay between batches

@@ -5,12 +5,12 @@
  * Safe to run at any time. Makes no API calls, no DB writes (except reads).
  */
 
-import { fetchUnpublishedAssets } from "../services/supabase.js";
-import { validateImage } from "../utils/imageValidation.js";
-import { generateCaption } from "../utils/captionGenerator.js";
-import { validateAsset } from "../utils/validation.js";
-import { logger } from "../utils/logger.js";
-import { Platform, ZodiacSign } from "../types/socialAsset.js";
+import { fetchUnpublishedAssets } from "../services/supabase";
+import { validateImage } from "../utils/imageValidation";
+import { generateCaption } from "../utils/captionGenerator";
+import { validateAsset } from "../utils/validation";
+import { logger } from "../utils/logger";
+import { Platform, ZodiacSign } from "../types/socialAsset";
 
 const PLATFORMS: Platform[] = ["facebook", "instagram", "threads"];
 

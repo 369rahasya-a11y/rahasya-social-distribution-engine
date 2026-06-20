@@ -6,8 +6,8 @@
  * Use the npm scripts for specific commands.
  */
 
-import { runPublishWorkflow } from "./workflows/publishSocial.js";
-import { logger } from "./utils/logger.js";
+import { runPublishWorkflow } from "./workflows/publishSocial";
+import { logger } from "./utils/logger";
 
 async function main(): Promise<void> {
   logger.info("🌟 Rahasya Social Distribution Engine starting...");

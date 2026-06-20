@@ -3,7 +3,7 @@
  * Used internally by publishers for transient API failures.
  */
 
-import { logger } from "./logger.js";
+import { logger } from "./logger";
 
 export interface RetryOptions {
   maxAttempts?: number;
