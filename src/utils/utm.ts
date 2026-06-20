@@ -3,7 +3,7 @@
  * Ensures every link drives attributable website visits.
  */
 
-import { Platform } from "../types/socialAsset.js";
+import { Platform } from "../types/socialAsset";
 
 interface UTMParams {
   source: string;
@@ -62,7 +62,7 @@ export function buildUTMUrl(
  * The canonical Rahasya app URL.
  * Update this to point to your actual landing page or App Store link.
  */
-export const RAHASYA_BASE_URL = "https://rahasya.app";
+export const RAHASYA_BASE_URL = "https://discover-rahasya.vercel.app";
 
 /**
  * Get the full Rahasya URL with UTM tracking for a platform.
