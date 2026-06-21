@@ -1,53 +1,45 @@
 /**
  * Hashtag engine for Rahasya social posts.
  * Generates platform-optimized hashtag sets per zodiac sign.
+ *
+ * V2 — Engagement-first strategy: hashtag counts deliberately reduced.
+ * Heavy hashtag blocks read as spammy and suppress reach on new accounts.
+ * A tight, relevant set performs better for discovery and algorithmic trust.
  */
 
 import { Platform, ZodiacSign } from "../types/socialAsset";
 
 // ── Core brand hashtags ───────────────────────────────────────────────────
 
-const BRAND_HASHTAGS = ["#Rahasya", "#RahasyaApp"];
+const BRAND_HASHTAGS = ["#Rahasya"];
 
-const ASTROLOGY_HASHTAGS = [
-  "#Horoscope",
-  "#DailyHoroscope",
-  "#Astrology",
-  "#Zodiac",
-  "#AstrologyDaily",
-];
-
-const ENGAGEMENT_HASHTAGS = [
-  "#DailyInspiration",
-  "#MorningVibes",
-  "#SpiritualGuidance",
-  "#CosmicEnergy",
-];
+const ASTROLOGY_HASHTAGS = ["#Horoscope", "#Astrology", "#ZodiacSigns"];
 
 // ── Sign-specific hashtags ────────────────────────────────────────────────
 
 const SIGN_HASHTAGS: Record<ZodiacSign, string[]> = {
-  aries: ["#Aries", "#AriesDaily", "#AriesHoroscope", "#AriesSeason", "#AriesZodiac"],
-  taurus: ["#Taurus", "#TaurusDaily", "#TaurusHoroscope", "#TaurusSeason", "#TaurusZodiac"],
-  gemini: ["#Gemini", "#GeminiDaily", "#GeminiHoroscope", "#GeminiSeason", "#GeminiZodiac"],
-  cancer: ["#Cancer", "#CancerDaily", "#CancerHoroscope", "#CancerSeason", "#CancerZodiac"],
-  leo: ["#Leo", "#LeoDaily", "#LeoHoroscope", "#LeoSeason", "#LeoZodiac"],
-  virgo: ["#Virgo", "#VirgoDaily", "#VirgoHoroscope", "#VirgoSeason", "#VirgoZodiac"],
-  libra: ["#Libra", "#LibraDaily", "#LibraHoroscope", "#LibraSeason", "#LibraZodiac"],
-  scorpio: ["#Scorpio", "#ScorpioDaily", "#ScorpioHoroscope", "#ScorpioSeason", "#ScorpioZodiac"],
-  sagittarius: ["#Sagittarius", "#SagittariusDaily", "#SagittariusHoroscope", "#SagittariusSeason", "#SagittariusZodiac"],
-  capricorn: ["#Capricorn", "#CapricornDaily", "#CapricornHoroscope", "#CapricornSeason", "#CapricornZodiac"],
-  aquarius: ["#Aquarius", "#AquariusDaily", "#AquariusHoroscope", "#AquariusSeason", "#AquariusZodiac"],
-  pisces: ["#Pisces", "#PiscesDaily", "#PiscesHoroscope", "#PiscesSeason", "#PiscesZodiac"],
+  aries: ["#Aries", "#AriesSeason"],
+  taurus: ["#Taurus", "#TaurusSeason"],
+  gemini: ["#Gemini", "#GeminiSeason"],
+  cancer: ["#Cancer", "#CancerSeason"],
+  leo: ["#Leo", "#LeoSeason"],
+  virgo: ["#Virgo", "#VirgoSeason"],
+  libra: ["#Libra", "#LibraSeason"],
+  scorpio: ["#Scorpio", "#ScorpioSeason"],
+  sagittarius: ["#Sagittarius", "#SagittariusSeason"],
+  capricorn: ["#Capricorn", "#CapricornSeason"],
+  aquarius: ["#Aquarius", "#AquariusSeason"],
+  pisces: ["#Pisces", "#PiscesSeason"],
 };
 
 // ── Platform-specific hashtag counts ─────────────────────────────────────
-// Instagram: 20-30 optimal | Facebook: 3-5 optimal | Threads: 5-10 optimal
+// Instagram: 3-5 | Facebook: 3-5 | Threads: 2-3
+// Lower counts read as intentional, not spammy, and perform better on new accounts.
 
 const PLATFORM_HASHTAG_LIMITS: Record<Platform, number> = {
-  instagram: 25,
+  instagram: 5,
   facebook: 5,
-  threads: 8,
+  threads: 3,
 };
 
 /**
@@ -58,39 +50,15 @@ export function generateHashtags(sign: ZodiacSign, platform: Platform): string[]
   const signTags = SIGN_HASHTAGS[sign] || [];
   const limit = PLATFORM_HASHTAG_LIMITS[platform];
 
-  if (platform === "facebook") {
-    // Facebook: minimal hashtags — brand + sign + one astrology
-    return [
-      ...BRAND_HASHTAGS.slice(0, 1),
-      ...ASTROLOGY_HASHTAGS.slice(0, 2),
-      signTags[0] || "",
-      signTags[1] || "",
-    ]
-      .filter(Boolean)
-      .slice(0, limit);
-  }
-
   if (platform === "threads") {
-    // Threads: moderate — sign focus + astrology
-    return [
-      ...signTags.slice(0, 3),
-      ...ASTROLOGY_HASHTAGS.slice(0, 3),
-      ...BRAND_HASHTAGS.slice(0, 1),
-      ENGAGEMENT_HASHTAGS[0] || "",
-    ]
+    // Threads: tightest — sign + one astrology + brand
+    return [signTags[0] || "", ASTROLOGY_HASHTAGS[0] || "", BRAND_HASHTAGS[0] || ""]
       .filter(Boolean)
       .slice(0, limit);
   }
 
-  // Instagram: maximum reach — all categories
-  const all = [
-    ...signTags,
-    ...ASTROLOGY_HASHTAGS,
-    ...ENGAGEMENT_HASHTAGS,
-    ...BRAND_HASHTAGS,
-  ];
-
-  // Deduplicate
+  // Facebook + Instagram: sign + astrology + brand, deduplicated
+  const all = [...signTags, ...ASTROLOGY_HASHTAGS, ...BRAND_HASHTAGS];
   const unique = [...new Set(all)];
   return unique.slice(0, limit);
 }
