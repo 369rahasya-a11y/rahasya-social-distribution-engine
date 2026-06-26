@@ -7,7 +7,7 @@
  * Called by GitHub Actions on schedule and via workflow_dispatch.
  */
 
-import { fetchUnpublishedAssets, lockAsset, unlockAsset } from "../services/supabase";
+import { fetchUnpublishedAssetsForPlatform, lockAsset, unlockAsset } from "../services/supabase";
 import { FacebookPublisher } from "../publishers/FacebookPublisher";
 import { InstagramPublisher } from "../publishers/InstagramPublisher";
 import { ThreadsPublisher } from "../publishers/ThreadsPublisher";
@@ -37,7 +37,9 @@ interface WorkflowSummary {
 
 /**
  * Main publish workflow.
- * Returns a summary of what was published.
+ * Each platform independently fetches its own batch of up to `batchSize`
+ * unpublished assets, so Facebook, Instagram, and Threads each always see
+ * their own 10 items regardless of what has been published on the others.
  */
 export async function runPublishWorkflow(
   batchSize = 10
@@ -45,44 +47,50 @@ export async function runPublishWorkflow(
   const startTime = Date.now();
 
   logger.info("🚀 Starting Rahasya Social Distribution Engine");
-  logger.info(`📋 Fetching up to ${batchSize} unpublished assets...`);
-
-  const assets = await fetchUnpublishedAssets(batchSize);
-
-  if (assets.length === 0) {
-    logger.info("✨ No unpublished assets found. All caught up!");
-    return {
-      assetsProcessed: 0,
-      results: [],
-      errors: [],
-      durationMs: Date.now() - startTime,
-    };
-  }
-
-  logger.info(`📦 Found ${assets.length} asset(s) to process`);
+  logger.info(`📋 Fetching up to ${batchSize} unpublished assets per platform...`);
 
   const allResults: PublishResult[] = [];
   const errors: string[] = [];
+  let totalAssetsProcessed = 0;
 
-  for (const asset of assets) {
-    const assetResults = await processAsset(asset);
-    allResults.push(...assetResults);
+  for (const platform of PLATFORMS) {
+    logger.info(`\n📱 Platform: ${platform.toUpperCase()}`);
 
-    // Collect errors
-    for (const r of assetResults) {
-      if (!r.success && !r.skipped && r.error) {
-        errors.push(`Asset ${r.assetId} on ${r.platform}: ${r.error}`);
+    const assets = await fetchUnpublishedAssetsForPlatform(platform, batchSize);
+
+    if (assets.length === 0) {
+      logger.info(`✨ No unpublished assets for ${platform}. All caught up!`);
+      continue;
+    }
+
+    logger.info(`📦 Found ${assets.length} asset(s) to process for ${platform}`);
+    totalAssetsProcessed += assets.length;
+
+    for (const asset of assets) {
+      const assetResults = await processAsset(asset, platform);
+      allResults.push(...assetResults);
+
+      // Collect errors
+      for (const r of assetResults) {
+        if (!r.success && !r.skipped && r.error) {
+          errors.push(`Asset ${r.assetId} on ${r.platform}: ${r.error}`);
+        }
+      }
+
+      // Rate limit: pause between assets
+      if (assets.indexOf(asset) < assets.length - 1) {
+        await sleep(RATE_LIMITS.delayBetweenAssetsMs);
       }
     }
 
-    // Rate limit: pause between assets
-    if (assets.indexOf(asset) < assets.length - 1) {
-      await sleep(RATE_LIMITS.delayBetweenAssetsMs);
+    // Rate limit: pause between platforms
+    if (PLATFORMS.indexOf(platform) < PLATFORMS.length - 1) {
+      await sleep(RATE_LIMITS.delayBetweenPlatformsMs);
     }
   }
 
   const summary: WorkflowSummary = {
-    assetsProcessed: assets.length,
+    assetsProcessed: totalAssetsProcessed,
     results: allResults,
     errors,
     durationMs: Date.now() - startTime,
@@ -94,9 +102,9 @@ export async function runPublishWorkflow(
 }
 
 /**
- * Process a single asset across all platforms.
+ * Process a single asset for a single platform.
  */
-async function processAsset(asset: SocialAsset): Promise<PublishResult[]> {
+async function processAsset(asset: SocialAsset, platform: Platform): Promise<PublishResult[]> {
   const { id: assetId } = asset;
   const results: PublishResult[] = [];
 
@@ -110,16 +118,9 @@ async function processAsset(asset: SocialAsset): Promise<PublishResult[]> {
   }
 
   try {
-    for (const platform of PLATFORMS) {
-      const publisher = publishers[platform];
-      const result = await publisher.publish(asset);
-      results.push(result);
-
-      // Rate limit between platforms
-      if (PLATFORMS.indexOf(platform) < PLATFORMS.length - 1) {
-        await sleep(RATE_LIMITS.delayBetweenPlatformsMs);
-      }
-    }
+    const publisher = publishers[platform];
+    const result = await publisher.publish(asset);
+    results.push(result);
   } finally {
     // Always release the lock, even on error
     await unlockAsset(assetId);
