@@ -65,6 +65,41 @@ export async function fetchUnpublishedAssets(
 }
 
 /**
+ * Fetch up to `limit` assets not yet published to a specific platform.
+ * Facebook, Instagram, and Threads each get their own independent queue
+ * of unpublished assets — publishing on one platform does not consume
+ * slots for another.
+ */
+export async function fetchUnpublishedAssetsForPlatform(
+  platform: Platform,
+  limit = 10
+): Promise<SocialAsset[]> {
+  const db = getSupabaseClient();
+
+  const staleLockThreshold = new Date(
+    Date.now() - RETRY_CONFIG.lockTimeoutMs
+  ).toISOString();
+
+  const { data, error } = await db
+    .from("social_assets")
+    .select("*")
+    .eq(`${platform}_published`, false)
+    .or(
+      `processing.eq.false,processing_started_at.lt.${staleLockThreshold},processing_started_at.is.null`
+    )
+    .order("created_at", { ascending: true })
+    .limit(limit);
+
+  if (error) {
+    throw new Error(
+      `Failed to fetch unpublished assets for ${platform}: ${error.message}`
+    );
+  }
+
+  return (data as SocialAsset[]) || [];
+}
+
+/**
  * Fetch a single asset by ID.
  */
 export async function fetchAssetById(id: number): Promise<SocialAsset | null> {
