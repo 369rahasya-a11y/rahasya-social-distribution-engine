@@ -56,7 +56,13 @@ export async function runPublishWorkflow(
   for (const platform of PLATFORMS) {
     logger.info(`\n📱 Platform: ${platform.toUpperCase()}`);
 
-    const assets = await fetchUnpublishedAssetsForPlatform(platform, batchSize);
+    const platformBatchSize =
+  platform === "instagram" ? 1 : batchSize;
+
+const assets = await fetchUnpublishedAssetsForPlatform(
+  platform,
+  platformBatchSize
+);
 
     if (assets.length === 0) {
       logger.info(`✨ No unpublished assets for ${platform}. All caught up!`);
