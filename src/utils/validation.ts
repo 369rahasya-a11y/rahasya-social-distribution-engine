@@ -48,7 +48,7 @@ export function validateGraphAPIResponse(
     const message = err.message || "No message";
 
     // Token errors — actionable messages for the founder
-    if (code === 190 || type === "OAuthException") {
+    if (code === 190) {
       throw new Error(
         `${context}: Access token is invalid or expired (code ${code}). ` +
           `Regenerate your token at developers.facebook.com. Error: ${message}`
