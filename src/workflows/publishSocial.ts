@@ -24,7 +24,7 @@ const publishers = {
   threads: new ThreadsPublisher(),
 };
 
-const PLATFORMS: Platform[] = ["facebook", "instagram", "threads"];
+const PLATFORMS: Platform[] = ["facebook", "threads"];
 
 // ── Workflow ──────────────────────────────────────────────────────────────
 
