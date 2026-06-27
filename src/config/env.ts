@@ -73,6 +73,6 @@ export const RETRY_CONFIG = {
 // ── Rate limits (conservative) ────────────────────────────────────────────
 
 export const RATE_LIMITS = {
-  delayBetweenPlatformsMs: 2000,
-  delayBetweenAssetsMs: 3000,
+  delayBetweenPlatformsMs: 5000,
+  delayBetweenAssetsMs: 15000,
 } as const;
