@@ -1,52 +1,57 @@
 /**
- * ThreadsPublisher — publishes Rahasya horoscope assets to Threads.
- * Extends BasePublisher for consistent idempotency, logging, and retry behavior.
+ * ThreadsPublisher — publishes Rahasya assets to Threads.
+ * Uses the AI-generated marketing content stored in social_assets.
  */
 
 import { BasePublisher } from "./BasePublisher";
 import { SocialAsset, Platform } from "../types/socialAsset";
 import { publishToThreads } from "../services/threads";
-import { generateCaption } from "../utils/captionGenerator";
 
 export class ThreadsPublisher extends BasePublisher {
   readonly platform: Platform = "threads";
 
   /**
-   * Platform-specific validation for Threads.
-   * Threads text limit: 500 characters.
+   * Build the Threads post from the stored marketing content.
    */
-  protected validateForPlatform(asset: SocialAsset): string | null {
-    const caption = generateCaption(
-      asset.id,
-      asset.sign,
-      asset.mood,
-      asset.quote,
-      "threads"
+  private buildText(asset: SocialAsset): string {
+    const hashtags = (asset.hashtags ?? []).map(tag =>
+      tag.startsWith("#") ? tag : `#${tag.replace(/\s+/g, "")}`
     );
 
-    if (caption.text.length > 500) {
-      return `Threads caption too long: ${caption.text.length} chars (max 500). Will truncate.`;
+    let text = [
+      asset.caption ?? "",
+      "",
+      hashtags.join(" "),
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    // Threads limit: 500 characters
+    if (text.length > 500) {
+      text = text.slice(0, 497) + "...";
     }
 
-    return null; // valid
+    return text;
   }
 
   /**
-   * Call the Threads API to publish the image + text.
+   * Platform-specific validation.
+   */
+  protected validateForPlatform(asset: SocialAsset): string | null {
+    return null;
+  }
+
+  /**
+   * Publish the image + AI-generated text.
    */
   protected async publishToAPI(
     asset: SocialAsset
   ): Promise<{ postId: string; postUrl: string }> {
-    const caption = generateCaption(
-      asset.id,
-      asset.sign,
-      asset.mood,
-      asset.quote,
-      "threads"
-    );
+
+    const text = this.buildText(asset);
 
     return publishToThreads({
-      text: caption.text,
+      text,
       imageUrl: asset.image_url,
     });
   }
