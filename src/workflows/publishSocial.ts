@@ -42,7 +42,7 @@ interface WorkflowSummary {
  * their own 10 items regardless of what has been published on the others.
  */
 export async function runPublishWorkflow(
-  batchSize = 10
+  batchSize = 12
 ): Promise<WorkflowSummary> {
   const startTime = Date.now();
 
