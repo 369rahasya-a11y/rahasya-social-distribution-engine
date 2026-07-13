@@ -10,23 +10,22 @@ import { publishToFacebook } from "../services/facebook";
 export class FacebookPublisher extends BasePublisher {
   readonly platform: Platform = "facebook";
 
-  /**
-   * Platform-specific validation for Facebook.
-   */
-  protected validateForPlatform(asset: SocialAsset): string | null {
+  private buildMessage(asset: SocialAsset): string {
     const hashtags = (asset.hashtags ?? []).map(tag =>
       tag.startsWith("#") ? tag : `#${tag.replace(/\s+/g, "")}`
     );
 
-    const message = [
-      asset.card_hook ?? "",
-      "",
+    return [
       asset.caption ?? "",
       "",
       hashtags.join(" "),
     ]
       .filter(Boolean)
       .join("\n");
+  }
+
+  protected validateForPlatform(asset: SocialAsset): string | null {
+    const message = this.buildMessage(asset);
 
     if (message.length > 63206) {
       return `Facebook caption too long: ${message.length} chars (max 63,206)`;
@@ -35,9 +34,15 @@ export class FacebookPublisher extends BasePublisher {
     return null;
   }
 
-  /**
-   * Publish the image + AI-generated caption.
-   */
   protected async publishToAPI(
     asset: SocialAsset
-  ): Promise<{ postId: string; postUrl: string
+  ): Promise<{ postId: string; postUrl: string }> {
+
+    const message = this.buildMessage(asset);
+
+    return publishToFacebook({
+      message,
+      imageUrl: asset.image_url,
+    });
+  }
+}
