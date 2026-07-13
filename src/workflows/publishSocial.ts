@@ -24,7 +24,7 @@ const publishers = {
   threads: new ThreadsPublisher(),
 };
 
-const PLATFORMS: Platform[] = ["facebook", "threads"];
+const PLATFORMS: Platform[] = ["facebook", "instagram", "threads"];
 
 // ── Workflow ──────────────────────────────────────────────────────────────
 
@@ -56,8 +56,7 @@ export async function runPublishWorkflow(
   for (const platform of PLATFORMS) {
     logger.info(`\n📱 Platform: ${platform.toUpperCase()}`);
 
-    const platformBatchSize =
-  platform === "instagram" ? 1 : batchSize;
+    const platformBatchSize = batchSize;
 
 const assets = await fetchUnpublishedAssetsForPlatform(
   platform,
