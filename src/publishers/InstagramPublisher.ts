@@ -11,7 +11,7 @@ export class InstagramPublisher extends BasePublisher {
   readonly platform: Platform = "instagram";
 
   /**
-   * Build the final Instagram caption from the stored marketing content.
+   * Build the Instagram caption from the stored marketing content.
    */
   private buildCaption(asset: SocialAsset): string {
     const hashtags = (asset.hashtags ?? []).map(tag =>
@@ -19,8 +19,6 @@ export class InstagramPublisher extends BasePublisher {
     );
 
     return [
-      asset.card_hook ?? "",
-      "",
       asset.caption ?? "",
       "",
       hashtags.join(" "),
