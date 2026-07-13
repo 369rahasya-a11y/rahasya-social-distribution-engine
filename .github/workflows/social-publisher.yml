@@ -22,9 +22,12 @@ on:
         required: false
         type: string
 
-  # Daily schedule: 7:00 AM IST = 1:30 AM UTC
+  # Twice daily schedule
+  # 5:00 AM IST = 11:30 PM UTC (previous day)
+  # 5:00 PM IST = 11:30 AM UTC
   schedule:
-    - cron: '0 */10 * * *'
+    - cron: '30 23 * * *'
+    - cron: '30 11 * * *'
 
 # ── Concurrency: prevent duplicate runs ──────────────────────────────────
 concurrency:
