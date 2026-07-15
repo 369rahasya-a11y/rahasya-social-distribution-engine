@@ -15,6 +15,7 @@ export interface SocialAsset {
   horoscope_date: string; // ISO date e.g. "2024-01-15"
   sign: ZodiacSign;
   mood: string;
+  image_url: string;
 
   // Legacy
   quote: string;
